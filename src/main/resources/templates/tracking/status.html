@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Estado de Envío - Transportes Shalom</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        .timeline {
+            position: relative;
+            margin: 2rem 0;
+            padding: 0;
+            list-style: none;
+        }
+        .timeline:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #ddd;
+            left: 31px;
+            margin: 0;
+            border-radius: 2px;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        .timeline-badge {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #fff;
+            border: 4px solid #ddd;
+            position: absolute;
+            left: 21px;
+            top: 2px;
+            z-index: 10;
+        }
+        .timeline-badge.active {
+            border-color: #d32f2f;
+            background: #d32f2f;
+        }
+        .timeline-badge.completed {
+            border-color: #28a745;
+            background: #28a745;
+        }
+        .timeline-panel {
+            margin-left: 60px;
+            background: #fff;
+            padding: 1rem;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .timeline-panel h4 {
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+        .timeline-panel p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body style="background-color: #f4f6f9;">
+    <header>
+        <h1 style="margin: 0 auto; text-align: center;">SHALOM - CONTROL DE TRAZABILIDAD</h1>
+    </header>
+
+    <div class="container" style="max-width: 700px;">
+        <div style="margin-bottom: 1.5rem;">
+            <a th:href="@{/tracking/public}" class="btn btn-secondary">&laquo; Nueva Consulta</a>
+        </div>
+
+        <div class="form-container" style="margin: 0;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 1rem;">
+                <div>
+                    <h3 style="color: #d32f2f; margin: 0;">Código: <span th:text="${envio.codSeguimiento}">SH-000</span></h3>
+                    <p style="font-size: 0.85rem; color: #888;">Registrado el <span th:text="${envio.fechaRegistro}">2026-07-02</span></p>
+                </div>
+                <span class="badge badge-success" th:text="${envio.estadoPaquete}">Registrado</span>
+            </div>
+
+            <div style="margin-top: 1.5rem;">
+                <p><strong>Remitente:</strong> <span th:text="${envio.cliente.nombreCompleto}">Nombre</span></p>
+                <p><strong>Origen:</strong> <span th:text="${envio.origen}">Origen</span></p>
+                <p><strong>Destino:</strong> <span th:text="${envio.destino}">Destino</span></p>
+                <p><strong>Contenido:</strong> <span th:text="${envio.encomienda.descripcion}">Descripción</span></p>
+                <p><strong>Peso y Volumen:</strong> <span th:text="${envio.encomienda.pesoKg + ' Kg (' + envio.encomienda.dimensiones + ')'}">5 Kg</span></p>
+            </div>
+
+            <h3 style="margin-top: 2rem; color: #d32f2f;">Línea de Tiempo de Envío</h3>
+
+            <ul class="timeline">
+                <!-- Paso 1: Registrado -->
+                <li class="timeline-item">
+                    <div class="timeline-badge completed"></div>
+                    <div class="timeline-panel">
+                        <h4>Encomienda Registrada</h4>
+                        <p>El paquete ha sido ingresado al sistema en la agencia origen.</p>
+                    </div>
+                </li>
+
+                <!-- Paso 2: En Almacén -->
+                <li class="timeline-item">
+                    <div th:class="${envio.estadoPaquete == 'En Almacén' or envio.estadoPaquete == 'En Tránsito' or envio.estadoPaquete == 'Entregado' ? 'timeline-badge completed' : 'timeline-badge'}"></div>
+                    <div class="timeline-panel">
+                        <h4>En Almacén de Despacho</h4>
+                        <p>Paquete clasificado y listo para asignación de ruta de envío nacional.</p>
+                    </div>
+                </li>
+
+                <!-- Paso 3: En Tránsito -->
+                <li class="timeline-item">
+                    <div th:class="${envio.estadoPaquete == 'En Tránsito' or envio.estadoPaquete == 'Entregado' ? 'timeline-badge completed' : 'timeline-badge'}"></div>
+                    <div class="timeline-panel">
+                        <h4>En Tránsito Nacional</h4>
+                        <p>
+                            El paquete va rumbo a la agencia destino. 
+                            <span th:if="${envio.ruta != null}" th:text="${'Vehículo Placa: ' + envio.ruta.placaVehiculo + ' (Chofer: ' + envio.ruta.choferAsignado + ')'}" style="display: block; font-weight: bold; margin-top: 0.25rem;"></span>
+                        </p>
+                    </div>
+                </li>
+
+                <!-- Paso 4: Entregado -->
+                <li class="timeline-item">
+                    <div th:class="${envio.estadoPaquete == 'Entregado' ? 'timeline-badge active' : 'timeline-badge'}"></div>
+                    <div class="timeline-panel">
+                        <h4>Entregado</h4>
+                        <p th:if="${envio.estadoPaquete == 'Entregado'}">¡El paquete ha sido entregado exitosamente al destinatario final!</p>
+                        <p th:if="${envio.estadoPaquete != 'Entregado'}">Pendiente de arribo y entrega final en la sucursal de destino.</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

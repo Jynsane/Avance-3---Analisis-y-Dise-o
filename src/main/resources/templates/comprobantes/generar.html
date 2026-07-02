@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Generar Comprobante - Transportes Shalom</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <header>
+        <h1>SHALOM LOGISTICS - FACTURACIÓN</h1>
+        <div class="user-info">
+            <a th:href="@{/envios}">Volver a Envíos</a>
+            <a th:href="@{/dashboard}">Panel Principal</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="form-container">
+            <h2>Emitir Comprobante de Pago</h2>
+            <p style="color: #666; margin-bottom: 1.5rem;">Generación de Boleta o Factura electrónica para el envío <strong th:text="${envio.codSeguimiento}">SH-00000</strong></p>
+            <hr style="margin-bottom: 1.5rem; border: 0; border-top: 1px solid #eee;">
+
+            <form th:action="@{/comprobantes/generar}" method="post">
+                <input type="hidden" name="idEnvio" th:value="${envio.codEnvio}">
+
+                <div class="form-group">
+                    <label>Cliente Remitente</label>
+                    <input type="text" class="form-control" th:value="${envio.cliente.nombreCompleto}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label>DNI / RUC</label>
+                    <input type="text" class="form-control" th:value="${envio.cliente.dniRuc}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label>Monto a Cobrar (S/)</label>
+                    <input type="text" class="form-control" th:value="${'S/ ' + envio.costoTotal}" readonly style="font-weight: bold; color: #d32f2f;">
+                </div>
+
+                <div class="form-group">
+                    <label for="tipoDocumento">Tipo de Comprobante</label>
+                    <select id="tipoDocumento" name="tipoDocumento" class="form-control" required>
+                        <option value="Boleta">Boleta de Venta</option>
+                        <option value="Factura">Factura Electrónica</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Emitir e Imprimir</button>
+                    <a th:href="@{/envios/ver/{id}(id=${envio.codEnvio})}" class="btn btn-secondary" style="flex: 1;">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles del Envío - Transportes Shalom</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <header>
+        <h1>SHALOM LOGISTICS - DETALLES</h1>
+        <div class="user-info">
+            <a th:href="@{/envios}">Volver a la Lista</a>
+            <a th:href="@{/dashboard}">Panel Principal</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="form-container" style="max-width: 800px; background: white;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 style="color: #d32f2f;">Código de Encomienda: <span th:text="${envio.codSeguimiento}">SH-00000</span></h2>
+                <span th:class="${envio.estadoPaquete == 'Entregado' ? 'badge badge-success' : 'badge badge-info'}"
+                      th:text="${envio.estadoPaquete}" style="font-size: 1rem; padding: 0.5rem 1rem;">Estado</span>
+            </div>
+            <hr style="margin-bottom: 1.5rem; border: 0; border-top: 1px solid #eee;">
+
+            <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 0;">
+                <div>
+                    <h3 style="margin-bottom: 0.75rem; border-bottom: 2px solid #eee; padding-bottom: 0.25rem;">Datos del Envío</h3>
+                    <p><strong>Origen:</strong> <span th:text="${envio.origen}">Lima</span></p>
+                    <p><strong>Destino:</strong> <span th:text="${envio.destino}">Arequipa</span></p>
+                    <p><strong>Fecha Registro:</strong> <span th:text="${envio.fechaRegistro}">2026-07-02</span></p>
+                    <p><strong>Tipo de Pago:</strong> <span th:text="${envio.tipoPago}">Pago en Origen</span></p>
+                    <p style="font-size: 1.2rem; margin-top: 0.5rem;"><strong>Costo Total:</strong> <span style="color: #d32f2f; font-weight: bold;" th:text="${'S/ ' + envio.costoTotal}">S/ 0.00</span></p>
+                </div>
+
+                <div>
+                    <h3 style="margin-bottom: 0.75rem; border-bottom: 2px solid #eee; padding-bottom: 0.25rem;">Remitente</h3>
+                    <p><strong>Nombre:</strong> <span th:text="${envio.cliente.nombreCompleto}">Juan Pérez</span></p>
+                    <p><strong>DNI/RUC:</strong> <span th:text="${envio.cliente.dniRuc}">12345678</span></p>
+                    <p><strong>Teléfono:</strong> <span th:text="${envio.cliente.telefono}">999888777</span></p>
+                    <p><strong>Dirección:</strong> <span th:text="${envio.cliente.direccion}">Av. Larco 123</span></p>
+                </div>
+
+                <div>
+                    <h3 style="margin-bottom: 0.75rem; border-bottom: 2px solid #eee; padding-bottom: 0.25rem;">Paquete (Encomienda)</h3>
+                    <p><strong>ID Paquete:</strong> <span th:text="${envio.encomienda.codPaquete}">1</span></p>
+                    <p><strong>Descripción:</strong> <span th:text="${envio.encomienda.descripcion}">Caja de cartón</span></p>
+                    <p><strong>Peso:</strong> <span th:text="${envio.encomienda.pesoKg + ' Kg'}">5 Kg</span></p>
+                    <p><strong>Dimensiones:</strong> <span th:text="${envio.encomienda.dimensiones}">30x30x30</span></p>
+                </div>
+
+                <div>
+                    <h3 style="margin-bottom: 0.75rem; border-bottom: 2px solid #eee; padding-bottom: 0.25rem;">Ruta y Flota</h3>
+                    <div th:if="${envio.ruta != null}">
+                        <p><strong>Vehículo (Placa):</strong> <span th:text="${envio.ruta.placaVehiculo}">ABC-123</span></p>
+                        <p><strong>Conductor:</strong> <span th:text="${envio.ruta.choferAsignado}">Carlos Gómez</span></p>
+                        <p><strong>Agencia de Destino:</strong> <span th:text="${envio.ruta.agenciaDestino}">Arequipa</span></p>
+                    </div>
+                    <div th:if="${envio.ruta == null}">
+                        <p style="color: #888; font-style: italic;">Ruta no asignada por el Administrador todavía.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 3rem;">
+                <a th:href="@{/comprobantes/generar/{idEnvio}(idEnvio=${envio.codEnvio})}" class="btn btn-primary" style="flex: 1;">Generar Comprobante</a>
+                <a th:href="@{/comprobantes/remision/{idEnvio}(idEnvio=${envio.codEnvio})}" class="btn btn-secondary" style="flex: 1;">Ver Guía de Remisión</a>
+                <a th:href="@{/envios}" class="btn btn-secondary" style="flex: 1; background-color: #555;">Volver</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

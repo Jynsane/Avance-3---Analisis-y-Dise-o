@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario de Ruta - Transportes Shalom</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <header>
+        <h1>SHALOM LOGISTICS - RUTAS</h1>
+        <div class="user-info">
+            <a th:href="@{/rutas}">Volver a la Lista</a>
+            <a th:href="@{/dashboard}">Panel Principal</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="form-container">
+            <h2 th:text="${ruta.idRuta == null ? 'Registrar Nueva Ruta' : 'Editar Ruta'}">Formulario de Ruta</h2>
+            <hr style="margin-bottom: 1.5rem; border: 0; border-top: 1px solid #eee;">
+
+            <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+            <form th:action="@{/rutas/guardar}" th:object="${ruta}" method="post">
+                <input type="hidden" th:field="*{idRuta}">
+
+                <div class="form-group">
+                    <label for="placaVehiculo">Placa del Vehículo</label>
+                    <input type="text" id="placaVehiculo" th:field="*{placaVehiculo}" class="form-control" placeholder="E.g. ABC-123" required>
+                    <div class="error-msg" th:if="${#fields.hasErrors('placaVehiculo')}" th:errors="*{placaVehiculo}"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="choferAsignado">Nombre del Chofer / Transportista</label>
+                    <input type="text" id="choferAsignado" th:field="*{choferAsignado}" class="form-control" placeholder="Nombre completo del conductor" required>
+                    <div class="error-msg" th:if="${#fields.hasErrors('choferAsignado')}" th:errors="*{choferAsignado}"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="agenciaDestino">Agencia de Destino</label>
+                    <input type="text" id="agenciaDestino" th:field="*{agenciaDestino}" class="form-control" placeholder="Ciudad o sucursal de destino" required>
+                    <div class="error-msg" th:if="${#fields.hasErrors('agenciaDestino')}" th:errors="*{agenciaDestino}"></div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Guardar</button>
+                    <a th:href="@{/rutas}" class="btn btn-secondary" style="flex: 1;">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

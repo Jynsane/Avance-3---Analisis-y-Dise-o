@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Rutas y Flotas - Transportes Shalom</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <header>
+        <h1>SHALOM LOGISTICS - RUTAS</h1>
+        <div class="user-info">
+            <a th:href="@{/dashboard}">Panel Principal</a>
+            <a th:href="@{/logout}">Cerrar Sesión</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h2>Lista de Rutas y Flotas</h2>
+            <a th:href="@{/rutas/nueva}" class="btn btn-primary">Registrar Nueva Ruta</a>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID Ruta</th>
+                        <th>Placa del Vehículo</th>
+                        <th>Chofer / Transportista</th>
+                        <th>Agencia de Destino</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="r : ${rutas}">
+                        <td th:text="${r.idRuta}">1</td>
+                        <td th:text="${r.placaVehiculo}">ABC-123</td>
+                        <td th:text="${r.choferAsignado}">Carlos Gómez</td>
+                        <td th:text="${r.agenciaDestino}">Arequipa</td>
+                        <td>
+                            <a th:href="@{/rutas/editar/{id}(id=${r.idRuta})}" class="btn btn-success" style="padding: 0.25rem 0.5rem; font-size: 0.85rem;">Editar</a>
+                            <a th:href="@{/rutas/eliminar/{id}(id=${r.idRuta})}" class="btn btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.85rem;" onclick="return confirm('¿Está seguro de eliminar esta ruta?')">Eliminar</a>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(rutas)}">
+                        <td colspan="5" style="text-align: center; color: #888;">No hay rutas registradas.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar Sesión - Transportes Shalom</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body class="login-body">
+    <div class="login-container">
+        <h2>Transportes Shalom</h2>
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+        <form th:action="@{/login}" method="post">
+            <div class="form-group">
+                <label for="username">Usuario</label>
+                <input type="text" id="username" name="username" class="form-control" placeholder="Ingrese su usuario" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Ingrese su contraseña" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Ingresar</button>
+        </form>
+        <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #ddd;">
+        <div style="text-align: center;">
+            <p style="margin-bottom: 0.5rem; font-size: 0.9rem; color: #666;">¿Eres cliente?</p>
+            <a th:href="@{/tracking/public}" class="btn btn-secondary" style="width: 100%;">Seguimiento Público de Envíos</a>
+        </div>
+    </div>
+</body>
+</html>

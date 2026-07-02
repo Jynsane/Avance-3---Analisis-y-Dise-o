@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Seguimiento de Envíos - Transportes Shalom</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        .search-card {
+            max-width: 500px;
+            margin: 5rem auto;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-top: 5px solid #d32f2f;
+        }
+        .search-card h2 {
+            text-align: center;
+            color: #d32f2f;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body style="background-color: #eaecef;">
+    <div class="search-card">
+        <h2>Consulta tu Envío</h2>
+        <p style="color: #666; text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem;">
+            Ingrese el código de seguimiento (ej. SH-123456) para conocer el estado en tiempo real de su encomienda.
+        </p>
+
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+        <form th:action="@{/tracking/public/buscar}" method="get">
+            <div class="form-group">
+                <input type="text" name="codSeguimiento" class="form-control" placeholder="E.g. SH-100200" required style="text-align: center; font-size: 1.25rem; font-weight: bold; letter-spacing: 1px;">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.1rem; padding: 0.85rem;">Buscar Encomienda</button>
+        </form>
+        
+        <div style="text-align: center; margin-top: 1.5rem;">
+            <a th:href="@{/login}" style="color: #d32f2f; text-decoration: none; font-size: 0.9rem; font-weight: bold;">&laquo; Volver al Login de Personal</a>
+        </div>
+    </div>
+</body>
+</html>

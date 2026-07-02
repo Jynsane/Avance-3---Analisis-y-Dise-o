@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Envíos y Encomiendas - Transportes Shalom</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <header>
+        <h1>SHALOM LOGISTICS - ENVÍOS</h1>
+        <div class="user-info">
+            <a th:href="@{/dashboard}">Panel Principal</a>
+            <a th:href="@{/logout}">Cerrar Sesión</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h2>Registro de Encomiendas y Envíos</h2>
+            <a th:href="@{/envios/nuevo}" class="btn btn-primary">Registrar Nuevo Envío</a>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código Seguimiento</th>
+                        <th>Cliente</th>
+                        <th>Origen</th>
+                        <th>Destino</th>
+                        <th>Costo Total</th>
+                        <th>Tipo Pago</th>
+                        <th>Estado</th>
+                        <th>Fecha Registro</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="e : ${envios}">
+                        <td>
+                            <strong th:text="${e.codSeguimiento}">SH-123456</strong>
+                        </td>
+                        <td th:text="${e.cliente.nombreCompleto}">Juan Pérez</td>
+                        <td th:text="${e.origen}">Lima</td>
+                        <td th:text="${e.destino}">Arequipa</td>
+                        <td th:text="${'S/ ' + e.costoTotal}">S/ 25.00</td>
+                        <td th:text="${e.tipoPago}">Pago en Origen</td>
+                        <td>
+                            <span th:class="${e.estadoPaquete == 'Entregado' ? 'badge badge-success' : (e.estadoPaquete == 'En Tránsito' ? 'badge badge-warning' : 'badge badge-info')}"
+                                  th:text="${e.estadoPaquete}">Registrado</span>
+                        </td>
+                        <td th:text="${e.fechaRegistro}">2026-07-02</td>
+                        <td>
+                            <div style="display: flex; gap: 0.25rem;">
+                                <a th:href="@{/envios/ver/{id}(id=${e.codEnvio})}" class="btn btn-success" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Detalles</a>
+                                <a th:href="@{/comprobantes/generar/{idEnvio}(idEnvio=${e.codEnvio})}" class="btn btn-primary" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Comprobante</a>
+                                <a th:href="@{/comprobantes/remision/{idEnvio}(idEnvio=${e.codEnvio})}" class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Guía</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(envios)}">
+                        <td colspan="9" style="text-align: center; color: #888;">No hay envíos registrados.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

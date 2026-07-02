@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Control de Almacén - Transportes Shalom</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <header>
+        <h1>SHALOM LOGISTICS - ALMACÉN</h1>
+        <div class="user-info">
+            <a th:href="@{/dashboard}">Panel Principal</a>
+            <a th:href="@{/logout}">Cerrar Sesión</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <h2>Inventario y Control de Stock</h2>
+        <p style="color: #666; margin-top: 0.5rem; margin-bottom: 1.5rem;">Visualice y actualice los ingresos, salidas y estados de las encomiendas almacenadas.</p>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código Seguimiento</th>
+                        <th>Descripción</th>
+                        <th>Peso (Kg)</th>
+                        <th>Dimensiones</th>
+                        <th>Ruta Destino</th>
+                        <th>Estado Actual</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="e : ${envios}">
+                        <td><strong th:text="${e.codSeguimiento}">SH-123456</strong></td>
+                        <td th:text="${e.encomienda.descripcion}">Descripción</td>
+                        <td th:text="${e.encomienda.pesoKg + ' kg'}">5 kg</td>
+                        <td th:text="${e.encomienda.dimensiones}">30x30x30</td>
+                        <td th:text="${e.ruta != null ? e.ruta.agenciaDestino + ' (' + e.ruta.placaVehiculo + ')' : 'No Asignada'}">Arequipa</td>
+                        <td>
+                            <span th:class="${e.encomienda.estado == 'Entregado' ? 'badge badge-success' : (e.encomienda.estado == 'En Tránsito' ? 'badge badge-warning' : 'badge badge-info')}"
+                                  th:text="${e.encomienda.estado}">En Almacén</span>
+                        </td>
+                        <td>
+                            <a th:href="@{/almacen/actualizar/{id}(id=${e.codEnvio})}" class="btn btn-primary" style="padding: 0.25rem 0.5rem; font-size: 0.85rem;">Actualizar Estado</a>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(envios)}">
+                        <td colspan="7" style="text-align: center; color: #888;">No hay encomiendas registradas en almacén.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

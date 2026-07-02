@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Guía de Remisión - Transportes Shalom</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        @media print {
+            body { background: white; }
+            .no-print { display: none; }
+            .invoice-box { border: none; box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="no-print" style="max-width: 800px; margin: 1rem auto; padding: 0 1rem; display: flex; justify-content: space-between;">
+        <a th:href="@{/envios}" class="btn btn-secondary">&laquo; Volver a Envíos</a>
+        <button onclick="window.print()" class="btn btn-primary">Imprimir Guía</button>
+    </div>
+
+    <div class="invoice-box" style="border-top: 5px solid #28a745;">
+        <table cellpadding="0" cellspacing="0">
+            <tr class="top">
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            <td class="invoice-header" style="color: #28a745;">
+                                GUÍA DE REMISIÓN<br>
+                                <span style="font-size: 12px; color: #555; font-weight: normal; line-height: 1.2;">
+                                    Transportes de Encomiendas Shalom S.A.C.<br>
+                                    Remitente Electrónico
+                                </span>
+                            </td>
+                            <td>
+                                <div style="border: 2px solid #28a745; padding: 10px; text-align: center; border-radius: 5px;">
+                                    <h4 style="color: #28a745; margin: 0;">R.U.C. 20601234567</h4>
+                                    <h3 style="margin: 5px 0;">GUÍA DE REMISIÓN</h3>
+                                    <h4 style="margin: 0; color: #555;" th:text="${'GR01-00' + envio.codEnvio}">GR01-001</h4>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr class="information">
+                <td colspan="2">
+                    <table style="margin-top: 20px; border-bottom: 2px solid #eee; padding-bottom: 20px;">
+                        <tr>
+                            <td>
+                                <strong>Punto de Partida (Origen):</strong><br>
+                                <span th:text="${envio.origen}">Lima</span>
+                            </td>
+                            <td>
+                                <strong>Punto de Llegada (Destino):</strong><br>
+                                <span th:text="${envio.destino}">Arequipa</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding-top: 15px;">
+                                <strong>Remitente:</strong><br>
+                                <span th:text="${envio.cliente.nombreCompleto}">Cliente</span><br>
+                                <span th:text="${'DNI/RUC: ' + envio.cliente.dniRuc}">DNI/RUC</span>
+                            </td>
+                            <td style="padding-top: 15px;">
+                                <strong>Código Seguimiento (Tracking):</strong><br>
+                                <strong th:text="${envio.codSeguimiento}">SH-00000</strong>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2" style="padding-top: 20px;">
+                    <h3 style="color: #28a745; border-bottom: 1px solid #ddd; padding-bottom: 5px;">Datos del Transporte</h3>
+                    <table style="margin-top: 10px;">
+                        <tr th:if="${envio.ruta != null}">
+                            <td><strong>Placa del Vehículo:</strong> <span th:text="${envio.ruta.placaVehiculo}">ABC-123</span></td>
+                            <td><strong>Conductor Asignado:</strong> <span th:text="${envio.ruta.choferAsignado}">Carlos Gómez</span></td>
+                        </tr>
+                        <tr th:if="${envio.ruta == null}">
+                            <td colspan="2" style="color: #888; font-style: italic;">Vehículo y Conductor Pendientes de Asignación.</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2" style="padding-top: 20px;">
+                    <h3 style="color: #28a745; border-bottom: 1px solid #ddd; padding-bottom: 5px;">Bienes Transportados</h3>
+                    <table style="margin-top: 10px;">
+                        <thead>
+                            <tr style="background-color: #f8f9fa;">
+                                <th style="padding: 5px;">Descripción del Paquete</th>
+                                <th style="padding: 5px;">Peso (Kg)</th>
+                                <th style="padding: 5px;">Dimensiones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 10px; border-bottom: 1px solid #eee;" th:text="${envio.encomienda.descripcion}">Caja</td>
+                                <td style="padding: 10px; border-bottom: 1px solid #eee;" th:text="${envio.encomienda.pesoKg}">5</td>
+                                <td style="padding: 10px; border-bottom: 1px solid #eee;" th:text="${envio.encomienda.dimensiones}">30x30x30</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        
+        <div style="margin-top: 50px; display: flex; justify-content: space-around;">
+            <div style="border-top: 1px solid #ccc; width: 200px; text-align: center; padding-top: 5px; font-size: 0.8rem; color: #666;">
+                Firma del Conductor
+            </div>
+            <div style="border-top: 1px solid #ccc; width: 200px; text-align: center; padding-top: 5px; font-size: 0.8rem; color: #666;">
+                Firma del Destinatario
+            </div>
+        </div>
+    </div>
+</body>
+</html>

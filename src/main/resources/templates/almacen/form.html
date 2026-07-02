@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Actualizar Stock - Transportes Shalom</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <header>
+        <h1>SHALOM LOGISTICS - ALMACÉN</h1>
+        <div class="user-info">
+            <a th:href="@{/almacen}">Volver a Inventario</a>
+            <a th:href="@{/dashboard}">Panel Principal</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="form-container">
+            <h2>Actualizar Estado del Paquete</h2>
+            <p style="color: #666; margin-bottom: 1.5rem;">Modifique la ubicación o estado de inventario para el envío <strong th:text="${envio.codSeguimiento}">SH-00000</strong></p>
+            <hr style="margin-bottom: 1.5rem; border: 0; border-top: 1px solid #eee;">
+
+            <form th:action="@{/almacen/guardar}" method="post">
+                <input type="hidden" name="idEnvio" th:value="${envio.codEnvio}">
+
+                <div class="form-group">
+                    <label>Descripción del Paquete</label>
+                    <input type="text" class="form-control" th:value="${envio.encomienda.descripcion}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label>Peso (Kg)</label>
+                    <input type="text" class="form-control" th:value="${envio.encomienda.pesoKg + ' Kg'}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="nuevoEstado">Nuevo Estado de Almacén</label>
+                    <select id="nuevoEstado" name="nuevoEstado" class="form-control" required>
+                        <option value="En Almacén" th:selected="${envio.estadoPaquete == 'En Almacén'}">En Almacén (Ingreso)</option>
+                        <option value="En Tránsito" th:selected="${envio.estadoPaquete == 'En Tránsito'}">En Tránsito (Despachado)</option>
+                        <option value="Entregado" th:selected="${envio.estadoPaquete == 'Entregado'}">Entregado (Destinatario Final)</option>
+                        <option value="Pendiente de Entrega" th:selected="${envio.estadoPaquete == 'Pendiente de Entrega'}">Pendiente de Entrega (Retorno/Espera)</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Actualizar Estado</button>
+                    <a th:href="@{/almacen}" class="btn btn-secondary" style="flex: 1;">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

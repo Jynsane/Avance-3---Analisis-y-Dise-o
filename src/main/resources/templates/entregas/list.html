@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reparto y Entregas - Transportes Shalom</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <header>
+        <h1>SHALOM LOGISTICS - TRANSPORTE</h1>
+        <div class="user-info">
+            <a th:href="@{/dashboard}">Panel Principal</a>
+            <a th:href="@{/logout}">Cerrar Sesión</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <h2>Control de Reparto y Entregas</h2>
+        <p style="color: #666; margin-top: 0.5rem; margin-bottom: 1.5rem;">Gestione el estado de entrega final de los paquetes asignados a las rutas de transporte.</p>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código Seguimiento</th>
+                        <th>Descripción</th>
+                        <th>Destino Final</th>
+                        <th>Vehículo / Chofer</th>
+                        <th>Estado Actual</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="e : ${envios}">
+                        <td><strong th:text="${e.codSeguimiento}">SH-123456</strong></td>
+                        <td th:text="${e.encomienda.descripcion}">Descripción</td>
+                        <td th:text="${e.destino}">Arequipa</td>
+                        <td th:text="${e.ruta != null ? e.ruta.placaVehiculo + ' (' + e.ruta.choferAsignado + ')' : 'Sin ruta asignada'}">Vehículo</td>
+                        <td>
+                            <span th:class="${e.estadoPaquete == 'Entregado' ? 'badge badge-success' : (e.estadoPaquete == 'En Tránsito' ? 'badge badge-warning' : 'badge badge-info')}"
+                                  th:text="${e.estadoPaquete}">En Tránsito</span>
+                        </td>
+                        <td>
+                            <!-- Solo permitir registrar entrega si no está ya entregado -->
+                            <a th:if="${e.estadoPaquete != 'Entregado'}" th:href="@{/entregas/registrar/{id}(id=${e.codEnvio})}" class="btn btn-primary" style="padding: 0.25rem 0.5rem; font-size: 0.85rem;">Registrar Entrega</a>
+                            <span th:if="${e.estadoPaquete == 'Entregado'}" class="badge badge-success">Completado</span>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(envios)}">
+                        <td colspan="6" style="text-align: center; color: #888;">No hay envíos registrados para reparto.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
