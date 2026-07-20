@@ -2,82 +2,99 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Control - Transportes Shalom</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <header>
-        <h1>SHALOM LOGISTICS</h1>
+        <h1><i class="fa-solid fa-truck-fast"></i> SHALOM LOGISTICS</h1>
         <div class="user-info">
-            <span th:text="${'Hola, ' + usuario.nombre + ' (' + usuario.rol + ')'}" style="font-weight: 600;"></span>
-            <a th:href="@{/logout}">Cerrar Sesión</a>
+            <span>
+                <i class="fa-solid fa-circle-user" style="color: #ff5252; margin-right: 0.25rem;"></i>
+                <strong th:text="${usuario.nombre}" style="color: white;"></strong>
+                <span th:text="${' (' + usuario.rol + ')'}" style="color: #cbd5e1;"></span>
+            </span>
+            <a th:href="@{/logout}" class="nav-link logout-btn"><i class="fa-solid fa-power-off"></i> Salir</a>
         </div>
     </header>
 
     <div class="container">
-        <h2>Panel de Control</h2>
-        <p style="color: #666; margin-top: 0.5rem;">Bienvenido al sistema de gestión logística. Seleccione un módulo para comenzar.</p>
+        <div class="page-header" style="margin-bottom: 2rem;">
+            <div>
+                <h2 style="font-size: 2rem;"><i class="fa-solid fa-gauge-high"></i> Panel de Operaciones</h2>
+                <p style="color: var(--text-muted); margin-top: 0.25rem; font-size: 0.95rem;">Seleccione un módulo operativo para gestionar la encomiendas y despacho nacional.</p>
+            </div>
+        </div>
 
         <div class="dashboard-grid">
             <!-- Módulos Administrador o Recepcionista -->
             <a th:if="${usuario.rol == 'ADMINISTRADOR' or usuario.rol == 'RECEPCIONISTA'}" th:href="@{/clientes}" class="card">
                 <div>
+                    <div class="card-header-icon"><i class="fa-solid fa-users"></i></div>
                     <h3>Clientes</h3>
-                    <p>Registrar, buscar y gestionar la información de los clientes remitentes y destinatarios.</p>
+                    <p>Módulo de registro, búsqueda y gestión de datos personales de remitentes y consignatarios.</p>
                 </div>
-                <span class="badge badge-info" style="align-self: flex-start; margin-top: 1rem;">Gestionar</span>
+                <span class="badge badge-info" style="align-self: flex-start; margin-top: 1.5rem;"><i class="fa-solid fa-sliders"></i> Gestionar</span>
             </a>
 
             <a th:if="${usuario.rol == 'ADMINISTRADOR' or usuario.rol == 'RECEPCIONISTA'}" th:href="@{/envios}" class="card">
                 <div>
+                    <div class="card-header-icon"><i class="fa-solid fa-box-open"></i></div>
                     <h3>Registrar Envíos</h3>
-                    <p>Crear nuevas encomiendas, registrar origen/destino y calcular tarifas automáticas.</p>
+                    <p>Registro de nuevas encomiendas, cálculo automático de tarifas y generación del código de tracking.</p>
                 </div>
-                <span class="badge badge-info" style="align-self: flex-start; margin-top: 1rem;">Gestionar</span>
+                <span class="badge badge-info" style="align-self: flex-start; margin-top: 1.5rem;"><i class="fa-solid fa-sliders"></i> Gestionar</span>
             </a>
 
             <a th:if="${usuario.rol == 'ADMINISTRADOR' or usuario.rol == 'RECEPCIONISTA'}" th:href="@{/comprobantes}" class="card">
                 <div>
+                    <div class="card-header-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
                     <h3>Comprobantes y Guías</h3>
-                    <p>Generar boletas, facturas y consultar las guías de remisión de los despachos.</p>
+                    <p>Consulta, emisión e impresión de boletas, facturas electrónicas y guías de remisión de cargas.</p>
                 </div>
-                <span class="badge badge-info" style="align-self: flex-start; margin-top: 1rem;">Gestionar</span>
+                <span class="badge badge-info" style="align-self: flex-start; margin-top: 1.5rem;"><i class="fa-solid fa-sliders"></i> Gestionar</span>
             </a>
 
             <!-- Módulos Administrador o Almacenero -->
             <a th:if="${usuario.rol == 'ADMINISTRADOR' or usuario.rol == 'ALMACENERO'}" th:href="@{/almacen}" class="card">
                 <div>
+                    <div class="card-header-icon"><i class="fa-solid fa-warehouse"></i></div>
                     <h3>Control de Almacén</h3>
-                    <p>Monitorear stock, actualizar inventarios y controlar el ingreso/salida de paquetes.</p>
+                    <p>Monitoreo de stock de paquetes, actualización de ingresos y salidas en el almacén de despacho.</p>
                 </div>
-                <span class="badge badge-info" style="align-self: flex-start; margin-top: 1rem;">Gestionar</span>
+                <span class="badge badge-info" style="align-self: flex-start; margin-top: 1.5rem;"><i class="fa-solid fa-sliders"></i> Gestionar</span>
             </a>
 
             <!-- Módulos Administrador o Transportista -->
             <a th:if="${usuario.rol == 'ADMINISTRADOR' or usuario.rol == 'TRANSPORTISTA'}" th:href="@{/entregas}" class="card">
                 <div>
+                    <div class="card-header-icon"><i class="fa-solid fa-truck-ramp-box"></i></div>
                     <h3>Registrar Entregas</h3>
-                    <p>Confirmar la entrega final de encomiendas o reportar incidencias en ruta.</p>
+                    <p>Control del transportista en tránsito: registrar entregas exitosas a clientes o incidencias de ruta.</p>
                 </div>
-                <span class="badge badge-info" style="align-self: flex-start; margin-top: 1rem;">Gestionar</span>
+                <span class="badge badge-info" style="align-self: flex-start; margin-top: 1.5rem;"><i class="fa-solid fa-sliders"></i> Gestionar</span>
             </a>
 
             <!-- Módulos Administrador -->
             <a th:if="${usuario.rol == 'ADMINISTRADOR'}" th:href="@{/rutas}" class="card">
                 <div>
+                    <div class="card-header-icon"><i class="fa-solid fa-route"></i></div>
                     <h3>Rutas y Flotas</h3>
-                    <p>Configurar agencias de destino, registrar transportistas y asignar vehículos de transporte.</p>
+                    <p>Mantenimiento de agencias de destino, asignación de unidades de transporte y choferes autorizados.</p>
                 </div>
-                <span class="badge badge-info" style="align-self: flex-start; margin-top: 1rem;">Configurar</span>
+                <span class="badge badge-info" style="align-self: flex-start; margin-top: 1.5rem;"><i class="fa-solid fa-gear"></i> Configurar</span>
             </a>
 
             <!-- Módulo común para todos los roles del personal -->
-            <a th:href="@{/tracking/public}" class="card">
+            <a th:href="@{/tracking/public}" class="card" style="border-top: 4px solid var(--success-color);">
                 <div>
+                    <div class="card-header-icon" style="background: rgba(16, 185, 129, 0.08); color: var(--success-color);"><i class="fa-solid fa-magnifying-glass-location"></i></div>
                     <h3>Buscador de Tracking</h3>
-                    <p>Consulte la ubicación, movimientos e historial de trazabilidad de cualquier encomienda.</p>
+                    <p>Consulte la ubicación, historial de movimientos y estado de entrega de cualquier envío.</p>
                 </div>
-                <span class="badge badge-success" style="align-self: flex-start; margin-top: 1rem;">Público</span>
+                <span class="badge badge-success" style="align-self: flex-start; margin-top: 1.5rem;"><i class="fa-solid fa-eye"></i> Acceso Público</span>
             </a>
         </div>
     </div>

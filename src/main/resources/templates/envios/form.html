@@ -2,65 +2,74 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar Envío - Transportes Shalom</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <header>
-        <h1>SHALOM LOGISTICS - ENVÍOS</h1>
+        <h1><i class="fa-solid fa-truck-fast"></i> SHALOM LOGISTICS</h1>
         <div class="user-info">
-            <a th:href="@{/envios}">Volver a la Lista</a>
-            <a th:href="@{/dashboard}">Panel Principal</a>
+            <a th:href="@{/envios}" class="nav-link"><i class="fa-solid fa-list-ul"></i> Volver a Envíos</a>
+            <a th:href="@{/dashboard}" class="nav-link"><i class="fa-solid fa-gauge"></i> Principal</a>
         </div>
     </header>
 
     <div class="container">
-        <div class="form-container" style="max-width: 800px;">
-            <h2>Registrar Nueva Encomienda y Envío</h2>
-            <hr style="margin-bottom: 1.5rem; border: 0; border-top: 1px solid #eee;">
+        <div class="form-container" style="max-width: 850px;">
+            <h2>
+                <i class="fa-solid fa-boxes-packing" style="color: var(--primary-color);"></i> Registrar Nueva Encomienda y Envío
+            </h2>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">Ingrese los detalles de la carga para calcular la tarifa y generar el despacho.</p>
+            <hr style="margin-bottom: 2rem; border: 0; border-top: 1px solid var(--border-color);">
 
             <form th:action="@{/envios/guardar}" th:object="${envio}" method="post">
                 <input type="hidden" th:field="*{codEnvio}">
                 
-                <h3 style="color: #d32f2f; margin-bottom: 1rem; border-left: 3px solid #d32f2f; padding-left: 0.5rem;">Información del Cliente y Ruta</h3>
+                <h3 style="color: var(--primary-color); margin-bottom: 1.25rem; font-size: 1.1rem; border-left: 4px solid var(--primary-color); padding-left: 0.75rem; font-weight: 700;">
+                    <i class="fa-solid fa-user-tag"></i> Datos del Cliente y Asignación de Ruta
+                </h3>
                 
-                <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0; margin-bottom: 1.5rem;">
+                <div class="form-grid" style="margin-bottom: 2rem;">
                     <div class="form-group">
-                        <label for="cliente">Cliente Remitente</label>
+                        <label for="cliente">Cliente Remitente *</label>
                         <select id="cliente" th:field="*{cliente}" class="form-control" required>
                             <option value="">Seleccione un cliente...</option>
                             <option th:each="c : ${clientes}" th:value="${c.idCliente}" th:text="${c.nombreCompleto + ' (' + c.dniRuc + ')'}"></option>
                         </select>
                         <div class="error-msg" th:if="${#fields.hasErrors('cliente')}" th:errors="*{cliente}"></div>
-                        <p style="font-size: 0.8rem; color: #666; margin-top: 0.25rem;">
-                            ¿No está en la lista? <a th:href="@{/clientes/nuevo}" target="_blank">Registrar Cliente</a>
+                        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.4rem;">
+                            ¿No aparece en la lista? <a th:href="@{/clientes/nuevo}" target="_blank" style="color: var(--primary-color); font-weight: 600; text-decoration: none;"><i class="fa-solid fa-plus-circle"></i> Crear Cliente</a>
                         </p>
                     </div>
 
                     <div class="form-group">
-                        <label for="ruta">Ruta / Vehículo Asignado</label>
+                        <label for="ruta">Ruta y Flota Asignada</label>
                         <select id="ruta" th:field="*{ruta}" class="form-control">
-                            <option value="">Asignar más tarde (Pendiente)</option>
+                            <option value="">Asignar más tarde (Estado en Almacén)</option>
                             <option th:each="r : ${rutas}" th:value="${r.idRuta}" th:text="${r.agenciaDestino + ' - ' + r.placaVehiculo + ' (' + r.choferAsignado + ')'}"></option>
                         </select>
                     </div>
                 </div>
 
-                <h3 style="color: #d32f2f; margin-bottom: 1rem; border-left: 3px solid #d32f2f; padding-left: 0.5rem;">Detalles del Envío</h3>
+                <h3 style="color: var(--primary-color); margin-bottom: 1.25rem; font-size: 1.1rem; border-left: 4px solid var(--primary-color); padding-left: 0.75rem; font-weight: 700;">
+                    <i class="fa-solid fa-location-circle"></i> Parámetros de Ruta y Pago
+                </h3>
                 
-                <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0; margin-bottom: 1.5rem;">
+                <div class="form-grid" style="margin-bottom: 2rem;">
                     <div class="form-group">
-                        <label for="origen">Agencia Origen</label>
-                        <input type="text" id="origen" th:field="*{origen}" class="form-control" placeholder="E.g. Lima Principal" required>
+                        <label for="origen"><i class="fa-solid fa-building-flag"></i> Agencia de Origen *</label>
+                        <input type="text" id="origen" th:field="*{origen}" class="form-control" placeholder="E.g. Agencia Lima Norte" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="destino">Agencia Destino</label>
-                        <input type="text" id="destino" th:field="*{destino}" class="form-control" placeholder="E.g. Arequipa Counter" required>
+                        <label for="destino"><i class="fa-solid fa-map-location-dot"></i> Agencia de Destino *</label>
+                        <input type="text" id="destino" th:field="*{destino}" class="form-control" placeholder="E.g. Agencia Arequipa Sur" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="tipoPago">Tipo de Pago</label>
+                        <label for="tipoPago"><i class="fa-solid fa-money-bill-transfer"></i> Método de Pago *</label>
                         <select id="tipoPago" th:field="*{tipoPago}" class="form-control" required>
                             <option value="Pago en Origen">Pago en Origen</option>
                             <option value="Pago en Destino">Pago en Destino</option>
@@ -68,38 +77,44 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="codSeguimiento">Código de Seguimiento</label>
-                        <input type="text" id="codSeguimiento" th:field="*{codSeguimiento}" class="form-control" placeholder="Se autogenerará si se deja en blanco">
+                        <label for="codSeguimiento"><i class="fa-solid fa-barcode"></i> Código de Seguimiento (Autogenerado)</label>
+                        <input type="text" id="codSeguimiento" th:field="*{codSeguimiento}" class="form-control" placeholder="E.g. SH-892400 (Dejar vacío para generar)" style="font-weight: 700; letter-spacing: 0.5px;">
                     </div>
                 </div>
 
-                <h3 style="color: #d32f2f; margin-bottom: 1rem; border-left: 3px solid #d32f2f; padding-left: 0.5rem;">Detalles del Paquete (Encomienda)</h3>
+                <h3 style="color: var(--primary-color); margin-bottom: 1.25rem; font-size: 1.1rem; border-left: 4px solid var(--primary-color); padding-left: 0.75rem; font-weight: 700;">
+                    <i class="fa-solid fa-box"></i> Especificaciones de la Encomienda
+                </h3>
                 
-                <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0; margin-bottom: 1.5rem;">
-                    <div class="form-group" style="grid-column: span 2;">
-                        <label for="descripcion">Descripción del Contenido</label>
-                        <input type="text" id="descripcion" th:field="*{encomienda.descripcion}" class="form-control" placeholder="E.g. Caja con repuestos de motor, ropa, etc." required>
+                <div class="form-grid" style="margin-bottom: 2rem;">
+                    <div class="form-group full-width">
+                        <label for="descripcion">Descripción de Carga *</label>
+                        <input type="text" id="descripcion" th:field="*{encomienda.descripcion}" class="form-control" placeholder="Describa el contenido detalladamente" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="pesoKg">Peso (Kg)</label>
-                        <input type="number" step="0.1" id="pesoKg" th:field="*{encomienda.pesoKg}" class="form-control" placeholder="E.g. 5.5" required>
+                        <label for="pesoKg"><i class="fa-solid fa-weight-hanging"></i> Peso del Paquete (Kg) *</label>
+                        <input type="number" step="0.1" id="pesoKg" th:field="*{encomienda.pesoKg}" class="form-control" placeholder="E.g. 10.5" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="dimensiones">Dimensiones (cm: Largo x Ancho x Alto)</label>
-                        <input type="text" id="dimensiones" th:field="*{encomienda.dimensiones}" class="form-control" placeholder="E.g. 30x20x20" required>
+                        <label for="dimensiones"><i class="fa-solid fa-ruler-combined"></i> Dimensiones (Largo x Ancho x Alto cm) *</label>
+                        <input type="text" id="dimensiones" th:field="*{encomienda.dimensiones}" class="form-control" placeholder="E.g. 40x30x30" required>
                     </div>
                 </div>
 
-                <div class="alert alert-success" style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem;">
-                    <span style="font-weight: bold; font-size: 1.1rem;">Costo de Envío Estimado:</span>
-                    <span id="costoEstimado" style="font-size: 1.5rem; font-weight: bold; color: #155724;">S/ 0.00</span>
+                <div class="alert alert-success" style="display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 2rem; border-radius: var(--radius-md); margin-bottom: 2.5rem;">
+                    <span style="font-weight: 700; font-size: 1.05rem;"><i class="fa-solid fa-calculator"></i> Tarifa Total Estimada (P.V.P.):</span>
+                    <span id="costoEstimado" style="font-size: 1.8rem; font-weight: 800; color: #047857;">S/ 0.00</span>
                 </div>
 
-                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                    <button type="submit" class="btn btn-primary" style="flex: 1;">Registrar Envío</button>
-                    <a th:href="@{/envios}" class="btn btn-secondary" style="flex: 1;">Cancelar</a>
+                <div style="display: flex; gap: 1.5rem;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1; padding: 1rem 2rem; font-size: 1.05rem;">
+                        <i class="fa-solid fa-circle-check"></i> Registrar Envío y Cargar
+                    </button>
+                    <a th:href="@{/envios}" class="btn btn-secondary" style="flex: 1; padding: 1rem 2rem; font-size: 1.05rem;">
+                        <i class="fa-solid fa-ban"></i> Cancelar
+                    </a>
                 </div>
             </form>
         </div>

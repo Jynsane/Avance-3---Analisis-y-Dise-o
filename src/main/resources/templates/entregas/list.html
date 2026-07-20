@@ -2,52 +2,70 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reparto y Entregas - Transportes Shalom</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <header>
-        <h1>SHALOM LOGISTICS - TRANSPORTE</h1>
+        <h1><i class="fa-solid fa-truck-fast"></i> SHALOM LOGISTICS</h1>
         <div class="user-info">
-            <a th:href="@{/dashboard}">Panel Principal</a>
-            <a th:href="@{/logout}">Cerrar Sesión</a>
+            <a th:href="@{/dashboard}" class="nav-link"><i class="fa-solid fa-gauge"></i> Panel Principal</a>
+            <a th:href="@{/logout}" class="nav-link logout-btn"><i class="fa-solid fa-power-off"></i> Salir</a>
         </div>
     </header>
 
     <div class="container">
-        <h2>Control de Reparto y Entregas</h2>
-        <p style="color: #666; margin-top: 0.5rem; margin-bottom: 1.5rem;">Gestione el estado de entrega final de los paquetes asignados a las rutas de transporte.</p>
+        <div class="page-header">
+            <div>
+                <h2><i class="fa-solid fa-truck-ramp-box"></i> Control de Reparto y Entregas</h2>
+                <p style="color: var(--text-muted); margin-top: 0.25rem;">Módulo del transportista para confirmar las entregas físicas o reportar incidencias en ruta.</p>
+            </div>
+        </div>
 
         <div class="table-container">
             <table>
                 <thead>
                     <tr>
                         <th>Código Seguimiento</th>
-                        <th>Descripción</th>
+                        <th>Descripción de Carga</th>
                         <th>Destino Final</th>
-                        <th>Vehículo / Chofer</th>
+                        <th>Vehículo / Conductor</th>
                         <th>Estado Actual</th>
-                        <th>Acción</th>
+                        <th style="text-align: center;">Acción</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="e : ${envios}">
-                        <td><strong th:text="${e.codSeguimiento}">SH-123456</strong></td>
+                        <td>
+                            <span class="badge badge-info" style="font-size: 0.8rem; font-weight: 700; padding: 0.4rem 0.8rem;">
+                                <i class="fa-solid fa-barcode"></i> <span th:text="${e.codSeguimiento}">SH-123456</span>
+                            </span>
+                        </td>
                         <td th:text="${e.encomienda.descripcion}">Descripción</td>
-                        <td th:text="${e.destino}">Arequipa</td>
+                        <td><strong><i class="fa-solid fa-location-dot"></i> <span th:text="${e.destino}">Arequipa</span></strong></td>
                         <td th:text="${e.ruta != null ? e.ruta.placaVehiculo + ' (' + e.ruta.choferAsignado + ')' : 'Sin ruta asignada'}">Vehículo</td>
                         <td>
                             <span th:class="${e.estadoPaquete == 'Entregado' ? 'badge badge-success' : (e.estadoPaquete == 'En Tránsito' ? 'badge badge-warning' : 'badge badge-info')}"
-                                  th:text="${e.estadoPaquete}">En Tránsito</span>
+                                  style="font-size: 0.75rem;">
+                                <i th:class="${e.estadoPaquete == 'Entregado' ? 'fa-solid fa-circle-check' : (e.estadoPaquete == 'En Tránsito' ? 'fa-solid fa-truck-moving' : 'fa-solid fa-warehouse')}"></i>
+                                <span th:text="${e.estadoPaquete}">En Tránsito</span>
+                            </span>
                         </td>
-                        <td>
+                        <td style="text-align: center;">
                             <!-- Solo permitir registrar entrega si no está ya entregado -->
-                            <a th:if="${e.estadoPaquete != 'Entregado'}" th:href="@{/entregas/registrar/{id}(id=${e.codEnvio})}" class="btn btn-primary" style="padding: 0.25rem 0.5rem; font-size: 0.85rem;">Registrar Entrega</a>
-                            <span th:if="${e.estadoPaquete == 'Entregado'}" class="badge badge-success">Completado</span>
+                            <a th:if="${e.estadoPaquete != 'Entregado'}" th:href="@{/entregas/registrar/{id}(id=${e.codEnvio})}" class="btn btn-primary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                                <i class="fa-solid fa-signature"></i> Confirmar Entrega
+                            </a>
+                            <span th:if="${e.estadoPaquete == 'Entregado'}" class="badge badge-success"><i class="fa-solid fa-circle-check"></i> Entregado</span>
                         </td>
                     </tr>
                     <tr th:if="${#lists.isEmpty(envios)}">
-                        <td colspan="6" style="text-align: center; color: #888;">No hay envíos registrados para reparto.</td>
+                        <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 3rem 0;">
+                            <i class="fa-solid fa-truck-moving" style="font-size: 2.2rem; margin-bottom: 0.5rem; display: block;"></i>
+                            No hay encomiendas asignadas para reparto actualmente.
+                        </td>
                     </tr>
                 </tbody>
             </table>

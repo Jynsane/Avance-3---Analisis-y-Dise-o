@@ -2,61 +2,84 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario de Cliente - Transportes Shalom</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <header>
-        <h1>SHALOM LOGISTICS - CLIENTES</h1>
+        <h1><i class="fa-solid fa-truck-fast"></i> SHALOM LOGISTICS</h1>
         <div class="user-info">
-            <a th:href="@{/clientes}">Volver a la Lista</a>
-            <a th:href="@{/dashboard}">Panel Principal</a>
+            <a th:href="@{/clientes}" class="nav-link"><i class="fa-solid fa-list-ul"></i> Volver a la Lista</a>
+            <a th:href="@{/dashboard}" class="nav-link"><i class="fa-solid fa-gauge"></i> Principal</a>
         </div>
     </header>
 
     <div class="container">
         <div class="form-container">
-            <h2 th:text="${cliente.idCliente == null ? 'Registrar Nuevo Cliente' : 'Editar Cliente'}">Formulario</h2>
-            <hr style="margin-bottom: 1.5rem; border: 0; border-top: 1px solid #eee;">
+            <h2>
+                <i class="fa-solid fa-user-gear" style="color: var(--primary-color);"></i>
+                <span th:text="${cliente.idCliente == null ? 'Registrar Nuevo Cliente' : 'Editar Cliente'}">Formulario</span>
+            </h2>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">Complete los campos obligatorios del remitente/destinatario.</p>
+            <hr style="margin-bottom: 2rem; border: 0; border-top: 1px solid var(--border-color);">
 
-            <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+            <div th:if="${error}" class="alert alert-danger">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span th:text="${error}"></span>
+            </div>
 
             <form th:action="@{/clientes/guardar}" th:object="${cliente}" method="post">
                 <input type="hidden" th:field="*{idCliente}">
 
                 <div class="form-group">
-                    <label for="dniRuc">DNI / RUC</label>
-                    <input type="text" id="dniRuc" th:field="*{dniRuc}" class="form-control" placeholder="Ingrese el DNI o RUC del cliente" required>
-                    <div class="error-msg" th:if="${#fields.hasErrors('dniRuc')}" th:errors="*{dniRuc}"></div>
+                    <label for="dniRuc"><i class="fa-solid fa-id-card"></i> Documento DNI / RUC *</label>
+                    <input type="text" id="dniRuc" th:field="*{dniRuc}" class="form-control" placeholder="E.g. 72001122 o 20601234567" required>
+                    <div class="error-msg" th:if="${#fields.hasErrors('dniRuc')}">
+                        <i class="fa-solid fa-circle-xmark"></i> <span th:errors="*{dniRuc}"></span>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="nombreCompleto">Nombre Completo</label>
-                    <input type="text" id="nombreCompleto" th:field="*{nombreCompleto}" class="form-control" placeholder="Ingrese los nombres y apellidos" required>
-                    <div class="error-msg" th:if="${#fields.hasErrors('nombreCompleto')}" th:errors="*{nombreCompleto}"></div>
+                    <label for="nombreCompleto"><i class="fa-solid fa-font"></i> Nombre Completo / Razón Social *</label>
+                    <input type="text" id="nombreCompleto" th:field="*{nombreCompleto}" class="form-control" placeholder="Ingrese nombres y apellidos" required>
+                    <div class="error-msg" th:if="${#fields.hasErrors('nombreCompleto')}">
+                        <i class="fa-solid fa-circle-xmark"></i> <span th:errors="*{nombreCompleto}"></span>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="telefono">Teléfono</label>
-                    <input type="text" id="telefono" th:field="*{telefono}" class="form-control" placeholder="Número de contacto" required>
-                    <div class="error-msg" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></div>
+                    <label for="telefono"><i class="fa-solid fa-phone"></i> Teléfono Móvil *</label>
+                    <input type="text" id="telefono" th:field="*{telefono}" class="form-control" placeholder="Número de 9 dígitos" required>
+                    <div class="error-msg" th:if="${#fields.hasErrors('telefono')}">
+                        <i class="fa-solid fa-circle-xmark"></i> <span th:errors="*{telefono}"></span>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="direccion">Dirección</label>
-                    <input type="text" id="direccion" th:field="*{direccion}" class="form-control" placeholder="Dirección de domicilio" required>
-                    <div class="error-msg" th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}"></div>
+                    <label for="direccion"><i class="fa-solid fa-map-location-dot"></i> Dirección Domiciliaria *</label>
+                    <input type="text" id="direccion" th:field="*{direccion}" class="form-control" placeholder="E.g. Av. Larco 456, Arequipa" required>
+                    <div class="error-msg" th:if="${#fields.hasErrors('direccion')}">
+                        <i class="fa-solid fa-circle-xmark"></i> <span th:errors="*{direccion}"></span>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="correo">Correo Electrónico</label>
+                    <label for="correo"><i class="fa-solid fa-envelope"></i> Correo Electrónico</label>
                     <input type="email" id="correo" th:field="*{correo}" class="form-control" placeholder="ejemplo@correo.com">
-                    <div class="error-msg" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}"></div>
+                    <div class="error-msg" th:if="${#fields.hasErrors('correo')}">
+                        <i class="fa-solid fa-circle-xmark"></i> <span th:errors="*{correo}"></span>
+                    </div>
                 </div>
 
-                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                    <button type="submit" class="btn btn-primary" style="flex: 1;">Guardar</button>
-                    <a th:href="@{/clientes}" class="btn btn-secondary" style="flex: 1;">Cancelar</a>
+                <div style="display: flex; gap: 1rem; margin-top: 2.5rem;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">
+                        <i class="fa-solid fa-floppy-disk"></i> Guardar Cliente
+                    </button>
+                    <a th:href="@{/clientes}" class="btn btn-secondary" style="flex: 1;">
+                        <i class="fa-solid fa-xmark"></i> Cancelar
+                    </a>
                 </div>
             </form>
         </div>

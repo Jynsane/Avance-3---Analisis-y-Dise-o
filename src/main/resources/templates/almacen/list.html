@@ -2,52 +2,72 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Control de Almacén - Transportes Shalom</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <header>
-        <h1>SHALOM LOGISTICS - ALMACÉN</h1>
+        <h1><i class="fa-solid fa-truck-fast"></i> SHALOM LOGISTICS</h1>
         <div class="user-info">
-            <a th:href="@{/dashboard}">Panel Principal</a>
-            <a th:href="@{/logout}">Cerrar Sesión</a>
+            <a th:href="@{/dashboard}" class="nav-link"><i class="fa-solid fa-gauge"></i> Panel Principal</a>
+            <a th:href="@{/logout}" class="nav-link logout-btn"><i class="fa-solid fa-power-off"></i> Salir</a>
         </div>
     </header>
 
     <div class="container">
-        <h2>Inventario y Control de Stock</h2>
-        <p style="color: #666; margin-top: 0.5rem; margin-bottom: 1.5rem;">Visualice y actualice los ingresos, salidas y estados de las encomiendas almacenadas.</p>
+        <div class="page-header">
+            <div>
+                <h2><i class="fa-solid fa-warehouse"></i> Inventario y Control de Stock</h2>
+                <p style="color: var(--text-muted); margin-top: 0.25rem;">Monitoree el ingreso, salida y tránsito de las encomiendas almacenadas.</p>
+            </div>
+        </div>
 
         <div class="table-container">
             <table>
                 <thead>
                     <tr>
                         <th>Código Seguimiento</th>
-                        <th>Descripción</th>
+                        <th>Descripción de Carga</th>
                         <th>Peso (Kg)</th>
                         <th>Dimensiones</th>
                         <th>Ruta Destino</th>
-                        <th>Estado Actual</th>
-                        <th>Acción</th>
+                        <th>Estado en Almacén</th>
+                        <th style="text-align: center;">Acción</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="e : ${envios}">
-                        <td><strong th:text="${e.codSeguimiento}">SH-123456</strong></td>
+                        <td>
+                            <span class="badge badge-info" style="font-size: 0.8rem; font-weight: 700; padding: 0.4rem 0.8rem;">
+                                <i class="fa-solid fa-barcode"></i> <span th:text="${e.codSeguimiento}">SH-123456</span>
+                            </span>
+                        </td>
                         <td th:text="${e.encomienda.descripcion}">Descripción</td>
                         <td th:text="${e.encomienda.pesoKg + ' kg'}">5 kg</td>
                         <td th:text="${e.encomienda.dimensiones}">30x30x30</td>
-                        <td th:text="${e.ruta != null ? e.ruta.agenciaDestino + ' (' + e.ruta.placaVehiculo + ')' : 'No Asignada'}">Arequipa</td>
                         <td>
-                            <span th:class="${e.encomienda.estado == 'Entregado' ? 'badge badge-success' : (e.encomienda.estado == 'En Tránsito' ? 'badge badge-warning' : 'badge badge-info')}"
-                                  th:text="${e.encomienda.estado}">En Almacén</span>
+                            <strong th:text="${e.ruta != null ? e.ruta.agenciaDestino + ' (' + e.ruta.placaVehiculo + ')' : 'Ruta Pendiente'}">Arequipa</strong>
                         </td>
                         <td>
-                            <a th:href="@{/almacen/actualizar/{id}(id=${e.codEnvio})}" class="btn btn-primary" style="padding: 0.25rem 0.5rem; font-size: 0.85rem;">Actualizar Estado</a>
+                            <span th:class="${e.encomienda.estado == 'Entregado' ? 'badge badge-success' : (e.encomienda.estado == 'En Tránsito' ? 'badge badge-warning' : 'badge badge-info')}"
+                                  style="font-size: 0.75rem;">
+                                <i th:class="${e.encomienda.estado == 'Entregado' ? 'fa-solid fa-circle-check' : (e.encomienda.estado == 'En Tránsito' ? 'fa-solid fa-truck-moving' : 'fa-solid fa-warehouse')}"></i>
+                                <span th:text="${e.encomienda.estado}">En Almacén</span>
+                            </span>
+                        </td>
+                        <td style="text-align: center;">
+                            <a th:href="@{/almacen/actualizar/{id}(id=${e.codEnvio})}" class="btn btn-primary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                                <i class="fa-solid fa-pen-fancy"></i> Actualizar Estado
+                            </a>
                         </td>
                     </tr>
                     <tr th:if="${#lists.isEmpty(envios)}">
-                        <td colspan="7" style="text-align: center; color: #888;">No hay encomiendas registradas en almacén.</td>
+                        <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 3rem 0;">
+                            <i class="fa-solid fa-boxes-stacked" style="font-size: 2.2rem; margin-bottom: 0.5rem; display: block;"></i>
+                            No hay encomiendas registradas en el inventario.
+                        </td>
                     </tr>
                 </tbody>
             </table>

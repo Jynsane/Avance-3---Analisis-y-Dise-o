@@ -2,58 +2,68 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar Entrega - Transportes Shalom</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <header>
-        <h1>SHALOM LOGISTICS - TRANSPORTE</h1>
+        <h1><i class="fa-solid fa-truck-fast"></i> SHALOM LOGISTICS</h1>
         <div class="user-info">
-            <a th:href="@{/entregas}">Volver a Entregas</a>
-            <a th:href="@{/dashboard}">Panel Principal</a>
+            <a th:href="@{/entregas}" class="nav-link"><i class="fa-solid fa-list-ul"></i> Volver a Entregas</a>
+            <a th:href="@{/dashboard}" class="nav-link"><i class="fa-solid fa-gauge"></i> Principal</a>
         </div>
     </header>
 
     <div class="container">
         <div class="form-container">
-            <h2>Registrar Entrega Física / Incidencia</h2>
-            <p style="color: #666; margin-bottom: 1.5rem;">Confirme si el paquete se entregó correctamente o registre cualquier inconveniente para el envío <strong th:text="${envio.codSeguimiento}">SH-00000</strong></p>
-            <hr style="margin-bottom: 1.5rem; border: 0; border-top: 1px solid #eee;">
+            <h2>
+                <i class="fa-solid fa-signature" style="color: var(--primary-color);"></i> Registrar Entrega o Incidencia
+            </h2>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">
+                Confirme si el paquete se entregó con éxito o reporte una incidencia de ruta para el envío <strong th:text="${envio.codSeguimiento}">SH-00000</strong>.
+            </p>
+            <hr style="margin-bottom: 2rem; border: 0; border-top: 1px solid var(--border-color);">
 
             <form th:action="@{/entregas/guardar}" method="post">
                 <input type="hidden" name="idEnvio" th:value="${envio.codEnvio}">
 
                 <div class="form-group">
-                    <label>Remitente / Cliente</label>
-                    <input type="text" class="form-control" th:value="${envio.cliente.nombreCompleto}" readonly>
+                    <label>Cliente Remitente</label>
+                    <input type="text" class="form-control" th:value="${envio.cliente.nombreCompleto}" readonly style="background-color: #f1f5f9; font-weight: 600;">
                 </div>
 
                 <div class="form-group">
-                    <label>Destino</label>
-                    <input type="text" class="form-control" th:value="${envio.destino}" readonly>
+                    <label>Sucursal Destino de Entrega</label>
+                    <input type="text" class="form-control" th:value="${envio.destino}" readonly style="background-color: #f1f5f9; font-weight: 600;">
                 </div>
 
                 <div class="form-group">
-                    <label>Descripción del Paquete</label>
-                    <input type="text" class="form-control" th:value="${envio.encomienda.descripcion}" readonly>
+                    <label>Descripción de Carga</label>
+                    <input type="text" class="form-control" th:value="${envio.encomienda.descripcion}" readonly style="background-color: #f1f5f9; font-weight: 600;">
                 </div>
 
                 <div class="form-group">
-                    <label for="accion">Acción / Estado de Entrega</label>
+                    <label for="accion"><i class="fa-solid fa-circle-question"></i> Estado de Entrega *</label>
                     <select id="accion" name="accion" class="form-control" onchange="toggleIncidencia(this.value)" required>
-                        <option value="ENTREGADO">Entregado a Destinatario (Con éxito)</option>
-                        <option value="INCIDENCIA">Registrar Incidencia (Cliente Ausente / Error de Dirección)</option>
+                        <option value="ENTREGADO">Entregado Exitosamente a Destinatario</option>
+                        <option value="INCIDENCIA">Reportar Incidencia de Ruta / Cliente Ausente</option>
                     </select>
                 </div>
 
                 <div class="form-group" id="grupoIncidencia" style="display: none;">
-                    <label for="detalleIncidencia">Detalle de la Incidencia</label>
-                    <textarea id="detalleIncidencia" name="detalleIncidencia" class="form-control" placeholder="Describa el motivo por el cual no se pudo entregar el paquete..." rows="3"></textarea>
+                    <label for="detalleIncidencia"><i class="fa-solid fa-triangle-exclamation"></i> Detalle de la Incidencia *</label>
+                    <textarea id="detalleIncidencia" name="detalleIncidencia" class="form-control" placeholder="E.g. El cliente no se encontraba en su domicilio; dirección errónea; etc." rows="3"></textarea>
                 </div>
 
-                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                    <button type="submit" class="btn btn-primary" style="flex: 1;">Registrar</button>
-                    <a th:href="@{/entregas}" class="btn btn-secondary" style="flex: 1;">Cancelar</a>
+                <div style="display: flex; gap: 1rem; margin-top: 2.5rem;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">
+                        <i class="fa-solid fa-circle-check"></i> Registrar Estado
+                    </button>
+                    <a th:href="@{/entregas}" class="btn btn-secondary" style="flex: 1;">
+                        <i class="fa-solid fa-ban"></i> Cancelar
+                    </a>
                 </div>
             </form>
         </div>

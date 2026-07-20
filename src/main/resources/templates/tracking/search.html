@@ -2,43 +2,58 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seguimiento de Envíos - Transportes Shalom</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .search-card {
-            max-width: 500px;
+            max-width: 520px;
             margin: 5rem auto;
             background: white;
-            padding: 2.5rem;
-            border-radius: 8px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            border-top: 5px solid #d32f2f;
+            padding: 3rem 2.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            border-top: 5px solid var(--primary-color);
         }
         .search-card h2 {
             text-align: center;
-            color: #d32f2f;
+            color: var(--secondary-color);
             margin-bottom: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
     </style>
 </head>
 <body style="background-color: #eaecef;">
     <div class="search-card">
-        <h2>Consulta tu Envío</h2>
-        <p style="color: #666; text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem;">
-            Ingrese el código de seguimiento (ej. SH-123456) para conocer el estado en tiempo real de su encomienda.
+        <h2><i class="fa-solid fa-route" style="color: var(--primary-color);"></i> Consulta tu Envío</h2>
+        <p style="color: var(--text-muted); text-align: center; margin-bottom: 2rem; font-size: 0.9rem; line-height: 1.6;">
+            Ingrese el código de seguimiento (ejemplo: **SH-100200**) para conocer el estado y trazabilidad en tiempo real de su encomienda.
         </p>
 
-        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+        <div th:if="${error}" class="alert alert-danger" style="margin-bottom: 1.5rem;">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span th:text="${error}"></span>
+        </div>
 
         <form th:action="@{/tracking/public/buscar}" method="get">
-            <div class="form-group">
-                <input type="text" name="codSeguimiento" class="form-control" placeholder="E.g. SH-100200" required style="text-align: center; font-size: 1.25rem; font-weight: bold; letter-spacing: 1px;">
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+                <input type="text" name="codSeguimiento" class="form-control" placeholder="E.g. SH-123456" required style="text-align: center; font-size: 1.4rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--primary-color); padding: 0.9rem;">
             </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.1rem; padding: 0.85rem;">Buscar Encomienda</button>
+            <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.05rem; padding: 0.9rem;">
+                <i class="fa-solid fa-magnifying-glass"></i> Buscar Encomienda
+            </button>
         </form>
         
-        <div style="text-align: center; margin-top: 1.5rem;">
-            <a th:href="@{/login}" style="color: #d32f2f; text-decoration: none; font-size: 0.9rem; font-weight: bold;">&laquo; Volver al Login de Personal</a>
+        <div style="text-align: center; margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+            <a th:href="@{/login}" style="color: var(--primary-color); text-decoration: none; font-size: 0.875rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.25rem;">
+                <i class="fa-solid fa-arrow-left-long"></i> Volver al Login de Personal
+            </a>
         </div>
     </div>
 </body>

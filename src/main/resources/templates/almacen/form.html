@@ -2,39 +2,45 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Actualizar Stock - Transportes Shalom</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <header>
-        <h1>SHALOM LOGISTICS - ALMACÉN</h1>
+        <h1><i class="fa-solid fa-truck-fast"></i> SHALOM LOGISTICS</h1>
         <div class="user-info">
-            <a th:href="@{/almacen}">Volver a Inventario</a>
-            <a th:href="@{/dashboard}">Panel Principal</a>
+            <a th:href="@{/almacen}" class="nav-link"><i class="fa-solid fa-warehouse"></i> Volver a Almacén</a>
+            <a th:href="@{/dashboard}" class="nav-link"><i class="fa-solid fa-gauge"></i> Principal</a>
         </div>
     </header>
 
     <div class="container">
         <div class="form-container">
-            <h2>Actualizar Estado del Paquete</h2>
-            <p style="color: #666; margin-bottom: 1.5rem;">Modifique la ubicación o estado de inventario para el envío <strong th:text="${envio.codSeguimiento}">SH-00000</strong></p>
-            <hr style="margin-bottom: 1.5rem; border: 0; border-top: 1px solid #eee;">
+            <h2>
+                <i class="fa-solid fa-pen-to-square" style="color: var(--primary-color);"></i> Actualizar Estado del Paquete
+            </h2>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">
+                Modifique la ubicación o estado de inventario para el envío <strong th:text="${envio.codSeguimiento}">SH-00000</strong>.
+            </p>
+            <hr style="margin-bottom: 2rem; border: 0; border-top: 1px solid var(--border-color);">
 
             <form th:action="@{/almacen/guardar}" method="post">
                 <input type="hidden" name="idEnvio" th:value="${envio.codEnvio}">
 
                 <div class="form-group">
-                    <label>Descripción del Paquete</label>
-                    <input type="text" class="form-control" th:value="${envio.encomienda.descripcion}" readonly>
+                    <label>Descripción de la Encomienda</label>
+                    <input type="text" class="form-control" th:value="${envio.encomienda.descripcion}" readonly style="background-color: #f1f5f9; font-weight: 600;">
                 </div>
 
                 <div class="form-group">
-                    <label>Peso (Kg)</label>
-                    <input type="text" class="form-control" th:value="${envio.encomienda.pesoKg + ' Kg'}" readonly>
+                    <label>Peso de Carga (Kg)</label>
+                    <input type="text" class="form-control" th:value="${envio.encomienda.pesoKg + ' Kg'}" readonly style="background-color: #f1f5f9; font-weight: 600;">
                 </div>
 
                 <div class="form-group">
-                    <label for="nuevoEstado">Nuevo Estado de Almacén</label>
+                    <label for="nuevoEstado"><i class="fa-solid fa-arrows-spin"></i> Nuevo Estado de Almacén *</label>
                     <select id="nuevoEstado" name="nuevoEstado" class="form-control" required>
                         <option value="En Almacén" th:selected="${envio.estadoPaquete == 'En Almacén'}">En Almacén (Ingreso)</option>
                         <option value="En Tránsito" th:selected="${envio.estadoPaquete == 'En Tránsito'}">En Tránsito (Despachado)</option>
@@ -43,9 +49,13 @@
                     </select>
                 </div>
 
-                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                    <button type="submit" class="btn btn-primary" style="flex: 1;">Actualizar Estado</button>
-                    <a th:href="@{/almacen}" class="btn btn-secondary" style="flex: 1;">Cancelar</a>
+                <div style="display: flex; gap: 1rem; margin-top: 2.5rem;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">
+                        <i class="fa-solid fa-arrows-rotate"></i> Actualizar Estado
+                    </button>
+                    <a th:href="@{/almacen}" class="btn btn-secondary" style="flex: 1;">
+                        <i class="fa-solid fa-xmark"></i> Cancelar
+                    </a>
                 </div>
             </form>
         </div>

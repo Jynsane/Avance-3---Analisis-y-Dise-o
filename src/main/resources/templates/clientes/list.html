@@ -2,22 +2,29 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clientes - Transportes Shalom</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <header>
-        <h1>SHALOM LOGISTICS - CLIENTES</h1>
+        <h1><i class="fa-solid fa-truck-fast"></i> SHALOM LOGISTICS</h1>
         <div class="user-info">
-            <a th:href="@{/dashboard}">Panel Principal</a>
-            <a th:href="@{/logout}">Cerrar Sesión</a>
+            <a th:href="@{/dashboard}" class="nav-link"><i class="fa-solid fa-gauge"></i> Panel Principal</a>
+            <a th:href="@{/logout}" class="nav-link logout-btn"><i class="fa-solid fa-power-off"></i> Salir</a>
         </div>
     </header>
 
     <div class="container">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-            <h2>Lista de Clientes Registrados</h2>
-            <a th:href="@{/clientes/nuevo}" class="btn btn-primary">Registrar Nuevo Cliente</a>
+        <div class="page-header">
+            <div>
+                <h2><i class="fa-solid fa-users"></i> Gestión de Clientes</h2>
+                <p style="color: var(--text-muted); margin-top: 0.25rem;">Registro de remitentes y destinatarios oficiales del sistema.</p>
+            </div>
+            <a th:href="@{/clientes/nuevo}" class="btn btn-primary">
+                <i class="fa-solid fa-user-plus"></i> Registrar Cliente
+            </a>
         </div>
 
         <div class="table-container">
@@ -25,29 +32,38 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>DNI/RUC</th>
+                        <th>DNI / RUC</th>
                         <th>Nombre Completo</th>
                         <th>Teléfono</th>
                         <th>Dirección</th>
-                        <th>Correo</th>
-                        <th>Acciones</th>
+                        <th>Correo Electrónico</th>
+                        <th style="text-align: center;">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="c : ${clientes}">
                         <td th:text="${c.idCliente}">1</td>
-                        <td th:text="${c.dniRuc}">12345678</td>
+                        <td><strong th:text="${c.dniRuc}">12345678</strong></td>
                         <td th:text="${c.nombreCompleto}">Juan Pérez</td>
                         <td th:text="${c.telefono}">999888777</td>
                         <td th:text="${c.direccion}">Av. Larco 123</td>
-                        <td th:text="${c.correo}">juan@gmail.com</td>
-                        <td>
-                            <a th:href="@{/clientes/editar/{id}(id=${c.idCliente})}" class="btn btn-success" style="padding: 0.25rem 0.5rem; font-size: 0.85rem;">Editar</a>
-                            <a th:href="@{/clientes/eliminar/{id}(id=${c.idCliente})}" class="btn btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.85rem;" onclick="return confirm('¿Está seguro de eliminar este cliente?')">Eliminar</a>
+                        <td th:text="${c.correo != null && !c.correo.isEmpty() ? c.correo : 'Sin correo'}">juan@gmail.com</td>
+                        <td style="text-align: center;">
+                            <div style="display: inline-flex; gap: 0.5rem;">
+                                <a th:href="@{/clientes/editar/{id}(id=${c.idCliente})}" class="btn btn-success" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                                    <i class="fa-solid fa-user-pen"></i> Editar
+                                </a>
+                                <a th:href="@{/clientes/eliminar/{id}(id=${c.idCliente})}" class="btn btn-danger" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="return confirm('¿Está seguro de eliminar este cliente?')">
+                                    <i class="fa-solid fa-user-xmark"></i> Eliminar
+                                </a>
+                            </div>
                         </td>
                     </tr>
                     <tr th:if="${#lists.isEmpty(clientes)}">
-                        <td colspan="7" style="text-align: center; color: #888;">No hay clientes registrados en el sistema.</td>
+                        <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 3rem 0;">
+                            <i class="fa-regular fa-folder-open" style="font-size: 2rem; margin-bottom: 0.5rem; display: block;"></i>
+                            No hay clientes registrados en el sistema.
+                        </td>
                     </tr>
                 </tbody>
             </table>

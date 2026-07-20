@@ -2,22 +2,29 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rutas y Flotas - Transportes Shalom</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <header>
-        <h1>SHALOM LOGISTICS - RUTAS</h1>
+        <h1><i class="fa-solid fa-truck-fast"></i> SHALOM LOGISTICS</h1>
         <div class="user-info">
-            <a th:href="@{/dashboard}">Panel Principal</a>
-            <a th:href="@{/logout}">Cerrar Sesión</a>
+            <a th:href="@{/dashboard}" class="nav-link"><i class="fa-solid fa-gauge"></i> Panel Principal</a>
+            <a th:href="@{/logout}" class="nav-link logout-btn"><i class="fa-solid fa-power-off"></i> Salir</a>
         </div>
     </header>
 
     <div class="container">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-            <h2>Lista de Rutas y Flotas</h2>
-            <a th:href="@{/rutas/nueva}" class="btn btn-primary">Registrar Nueva Ruta</a>
+        <div class="page-header">
+            <div>
+                <h2><i class="fa-solid fa-route"></i> Configuración de Rutas y Flotas</h2>
+                <p style="color: var(--text-muted); margin-top: 0.25rem;">Control de asignación de transportistas, unidades y agencias de destino.</p>
+            </div>
+            <a th:href="@{/rutas/nueva}" class="btn btn-primary">
+                <i class="fa-solid fa-circle-plus"></i> Registrar Nueva Ruta
+            </a>
         </div>
 
         <div class="table-container">
@@ -25,25 +32,34 @@
                 <thead>
                     <tr>
                         <th>ID Ruta</th>
-                        <th>Placa del Vehículo</th>
-                        <th>Chofer / Transportista</th>
+                        <th>Vehículo (Placa)</th>
+                        <th>Chofer Asignado</th>
                         <th>Agencia de Destino</th>
-                        <th>Acciones</th>
+                        <th style="text-align: center;">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="r : ${rutas}">
                         <td th:text="${r.idRuta}">1</td>
-                        <td th:text="${r.placaVehiculo}">ABC-123</td>
+                        <td><span class="badge badge-info"><i class="fa-solid fa-truck"></i> <span th:text="${r.placaVehiculo}">ABC-123</span></span></td>
                         <td th:text="${r.choferAsignado}">Carlos Gómez</td>
-                        <td th:text="${r.agenciaDestino}">Arequipa</td>
-                        <td>
-                            <a th:href="@{/rutas/editar/{id}(id=${r.idRuta})}" class="btn btn-success" style="padding: 0.25rem 0.5rem; font-size: 0.85rem;">Editar</a>
-                            <a th:href="@{/rutas/eliminar/{id}(id=${r.idRuta})}" class="btn btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.85rem;" onclick="return confirm('¿Está seguro de eliminar esta ruta?')">Eliminar</a>
+                        <td><strong><i class="fa-solid fa-location-dot" style="color: var(--primary-color);"></i> <span th:text="${r.agenciaDestino}">Arequipa</span></strong></td>
+                        <td style="text-align: center;">
+                            <div style="display: inline-flex; gap: 0.5rem;">
+                                <a th:href="@{/rutas/editar/{id}(id=${r.idRuta})}" class="btn btn-success" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                                    <i class="fa-solid fa-pen-to-square"></i> Editar
+                                </a>
+                                <a th:href="@{/rutas/eliminar/{id}(id=${r.idRuta})}" class="btn btn-danger" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="return confirm('¿Está seguro de eliminar esta ruta?')">
+                                    <i class="fa-solid fa-trash-can"></i> Eliminar
+                                </a>
+                            </div>
                         </td>
                     </tr>
                     <tr th:if="${#lists.isEmpty(rutas)}">
-                        <td colspan="5" style="text-align: center; color: #888;">No hay rutas registradas.</td>
+                        <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 3rem 0;">
+                            <i class="fa-solid fa-map-location-dot" style="font-size: 2rem; margin-bottom: 0.5rem; display: block;"></i>
+                            No hay rutas registradas en el sistema.
+                        </td>
                     </tr>
                 </tbody>
             </table>
