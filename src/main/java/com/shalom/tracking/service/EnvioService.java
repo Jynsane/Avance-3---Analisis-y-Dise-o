@@ -62,7 +62,11 @@ public class EnvioService {
 
     private String generateTrackingNumber() {
         Random rnd = new Random();
-        int number = rnd.nextInt(900000) + 100000;
-        return "SH-" + number;
+        String trackingCode;
+        do {
+            int number = rnd.nextInt(900000) + 100000;
+            trackingCode = "SH-" + number;
+        } while (envioRepository.findByCodSeguimiento(trackingCode).isPresent());
+        return trackingCode;
     }
 }
